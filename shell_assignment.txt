@@ -1,0 +1,128 @@
+1.1
+Get-ChildItem:
+I see the name of folders and files inside the working directory.
+
+Get-Alias ls:
+Tells me for which command the alias ls is a code for.
+ls -> Get-ChildItem
+
+1.2
+The -Detailed version also includes parameters and examples
+
+Add the option of Filter parameter and use *.txt to specify all files with the filename extension .txt.
+Get-ChildItem -Filter *txt
+
+2.1
+Current working directory is C:\WINDOWS\system32
+Command texts are yellows, strings are green
+
+2.2
+sl .. -> moves the directory back by one, to the mother directory
+Set_Location can specify the working directory, such as the shell_magic directory in thsi case.
+
+3.1
+New-Item -Path . -Name "hello world"
+Makes a new file in the wd.
+I did not run into any problems while making this
+
+3.2
+New-Item -ItemType directory -Name "hello_world"
+Makes a folder in the wd called hello_world
+
+3.3
+Making an empty file did not work, since this file was already made a couple steps before.
+Making the new file: 			ni "hello_world.bfe"    
+Rename it:				rni "hello_world.bfe" "hello_world.txt"
+Moving file:				mi .\hello_world.txt -Destination .\hello_world
+Moving it back:				mi .\hello_world\hello_world.txt
+Changing wd:				sl .\hello_world
+Moving file:				mi ..\hello_world.txt 
+Moving it back:				mi .\hello_world.txt ..
+
+3.4
+Copying a file creates a duplicate of the original file, moving changes the location of one file.
+(With the hello_world folder still as the working directory)
+Copying item:				cpi ..\hello-world.txt
+Copying and renaming item:			cpi ..\hello-world.txt .\world_hello
+
+3.5
+Moving back to the parent directory:		sl ..
+Removing item:				rm .\hello_world.txt
+Removing item in subdirectory		rm.\hello_world\hello_world.txt
+Error message when removing folder:
+The item at C:\Users\rozin\Documents\_UCU\DataAnalysis\week 2\day 1\shell_magic\hello_world has
+children and the Recurse parameter was not specified. If you continue, all children will be removed
+with the item. Are you sure you want to continue?
+[Y] Yes  [A] Yes to All  [N] No  [L] No to All  [S] Suspend  [?] Help (default is "Y"):
+Remove folder with contents:			rm ".\hello_world" then specified "Y"
+
+4.1
+New item					ni "hello_world.txt"
+Printing output: 				gc ".\hello_world.txt"
+There is no output, since the text file is empty, there is no content in it.
+
+4.2 
+write 'file contents' > file.txt
+write 'more contents' >> file.txt
+
+4.3
+Making text file: 	 			gci C:\Users\rozin -r | write > .\home_contents.list
+The | oh -p option helps so that the output will be printed by different directories, this is useful in case of a home directory with many subdirectories and files.
+
+5.1
+The Measure-Object command calculates the numeric properties of objects, and the characters, words, and lines in string objects, such as files of text.
+Measure-Object cannot be used for file.txt	measure .\file.txt
+However,					gc .\file.txt | measure -Word worked.
+It gives the output 4.
+
+The pipe operator can combine the commands, so the | oh -p used before only worked, because it already had a set it could execute its command on.
+Measuring files in working directory:		gc | measure 
+It gives the output 3.
+
+5.2 
+					write "hello world" "world hello" >> helloworld.txt
+					sls "world" .\helloworld.txt
+Output
+helloworld.txt:1:hello world
+helloworld.txt:2:world hello
+
+					sls "world" *.txt
+Output
+helloworld.txt:1:hello world
+helloworld.txt:2:world hello
+worldhello.txt:1:world hello
+
+with Select-Object we can select the coloumns such as Attributes, Name, Parent, etc.
+
+5.3
+cmd: 					sls "world" .\helloworld.txt
+					sls "world" ".\helloworld.txt" | measure | oh -p
+
+6.2
+Unpacking: 				tar -xvzf .\aup.tar.gz
+
+6.3
+List:					gci .\aup\ -r
+Deepest level that it goes to is a subdirectory of a subdirectory of the \aup directory, 
+for example: .\aup\cohort3\s274f.
+Opening a file to glimpse:			gc .\aup\cohort1\s003f\s003f.aup | oh -p
+Counting the number of files:			gci .\aup\ -Filter *.aup -r | measure
+There are 964 files with .aup extensions.
+
+6.4
+pipeline:					gci .\aup\cohort3\  -Filter *.aup -r | oh -p
+measure files in cohort 3:			gci .\aup\cohort3\  -Filter *.aup -r | measure
+measure files in cohort 1:			gci .\aup\cohort1\  -Filter *.aup -r | measure
+ssc majors in cohort 2:			gci .\aup\cohort2\  -Filter *ssc.aup -r | measure
+There are 19 Social Science Majors
+redirect to list:				gci .\aup\cohort2\  -Filter *ssc.aup -r > ssc_cohort2.list
+
+
+
+
+
+
+
+
+
+
